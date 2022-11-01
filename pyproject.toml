@@ -25,6 +25,7 @@ classifiers = [
 ]
 dependencies = [
   "click",
+  "pythonping"
 ]
 dynamic = ["version"]
 
