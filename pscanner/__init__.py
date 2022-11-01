@@ -2,19 +2,22 @@
 #
 # SPDX-License-Identifier: MIT
 import ipaddress
-from pythonping import ping
 import socket
 from typing import List
 from colorama import init, Fore
+from icmplib import async_multiping, ping, multiping
 
 init()
 GREEN = Fore.GREEN
 RESET = Fore.RESET
 GRAY = Fore.LIGHTBLACK_EX
 
+def are_alive(addresses: List[str]) -> List[str]:
+    hosts = multiping(addresses)
+    return [ host.address for host in hosts if  host.is_alive ]
 
 def is_host_alive(host: str) -> bool:
-    if ping(host, timeout=1, count=1).success():
+    if ping(host, timeout=1, count=1).is_alive:
         return True
     else:
         print(f"{GRAY}{host:15} is not alive {RESET}")
