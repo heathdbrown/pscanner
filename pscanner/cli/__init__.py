@@ -23,7 +23,7 @@ from ..__about__ import __version__
 @click.pass_context
 def pscanner(ctx: click.Context, host, port):
     if is_subnet(host):
-        hosts = [str(_) for _ in hosts_in_subnet(host)]
+        hosts = hosts_in_subnet(host)
         print(f"pinging {len(hosts)} hosts")
         alive_hosts = are_alive(hosts)
         print(f"found {len(alive_hosts)} alive")
