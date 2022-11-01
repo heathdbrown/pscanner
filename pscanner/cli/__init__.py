@@ -5,7 +5,6 @@ import asyncio
 import click
 from pscanner import (
     are_alive,
-    async_are_alive,
     is_port_open,
     is_subnet,
     hosts_in_subnet,
@@ -26,7 +25,6 @@ def pscanner(ctx: click.Context, host, port):
     if is_subnet(host):
         hosts = [str(_) for _ in hosts_in_subnet(host)]
         print(f"pinging {len(hosts)} hosts")
-        # alive_hosts = asyncio.run(async_are_alive(hosts), debug=True)
         alive_hosts = are_alive(hosts)
         print(f"found {len(alive_hosts)} alive")
         for ip in alive_hosts:
