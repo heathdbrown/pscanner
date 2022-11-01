@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 import click
-from pscanner import is_port_open, is_subnet, hosts_in_subnet
+from pscanner import is_port_open, is_subnet, hosts_in_subnet, is_host_alive
 from ..__about__ import __version__
 
 
@@ -12,9 +12,10 @@ from ..__about__ import __version__
 @click.argument('port')
 @click.pass_context
 def pscanner(ctx: click.Context, host, port):
-    click.echo(f'{host}, {port}')
     if is_subnet(host):
         for ip in hosts_in_subnet(host):
-            is_port_open(str(ip), port)
-    else:            
-        is_port_open(host, port)
+            if is_host_alive(str(ip)):
+                is_port_open(str(ip), port)
+    else:       
+        if is_host_alive(host):     
+            is_port_open(host, port)
