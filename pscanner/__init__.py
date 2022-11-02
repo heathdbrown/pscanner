@@ -4,25 +4,26 @@
 import ipaddress
 import socket
 from typing import List
+
 from colorama import init, Fore
 from icmplib import async_multiping, ping, multiping
+
 
 init()
 GREEN = Fore.GREEN
 RESET = Fore.RESET
 GRAY = Fore.LIGHTBLACK_EX
 
+
 def are_alive(addresses: List[str]) -> List[str]:
-    hosts = multiping(addresses)
-    return [host.address for host in hosts if host.is_alive]
+    return [host.address for host in multiping(addresses) if host.is_alive]
 
 
 def is_host_alive(host: str) -> bool:
-    if ping(host, timeout=1, count=1).is_alive:
-        return True
-    else:
+    if not ping(host, timeout=1, count=1).is_alive:
         print(f"{GRAY}{host:15} is not alive {RESET}")
         return False
+    return True
 
 
 def is_port_open(host: str, port: int) -> bool:
@@ -40,14 +41,11 @@ def is_port_open(host: str, port: int) -> bool:
 
 
 def is_subnet(ip: str) -> bool:
-    if "/" in ip:
-        return True
-    else:
-        return False
+    return "/" in ip
 
 
 def hosts_in_subnet(network: str) -> List[str]:
-    if not is_subnet:
+    if not is_subnet(network):
         print(f"{network} is not a network")
 
-    return [str(_) for _ in ipaddress.ip_network(network).hosts()]
+    return [str(host) for host in ipaddress.ip_network(network).hosts()]
