@@ -28,7 +28,7 @@ def pscanner(ctx: click.Context, host, port):
         alive_hosts = are_alive(hosts)
         print(f"found {len(alive_hosts)} alive")
         for ip in alive_hosts:
-                is_port_open(str(ip), port)
+            is_port_open(str(ip), port)
     else:
         if is_host_alive(host):
             is_port_open(host, port)
