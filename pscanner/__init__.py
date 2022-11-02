@@ -48,4 +48,4 @@ def hosts_in_subnet(network: str) -> List[str]:
     if not is_subnet(network):
         print(f"{network} is not a network")
 
-    return [str(_) for _ in ipaddress.ip_network(network).hosts()]
+    return [str(host) for host in ipaddress.ip_network(network).hosts()]
