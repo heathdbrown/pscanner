@@ -1,19 +1,30 @@
 # pscanner
 
-[![PyPI - Version](https://img.shields.io/pypi/v/pscanner.svg)](https://pypi.org/project/pscanner)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pscanner.svg)](https://pypi.org/project/pscanner)
-
 -----
 
 **Table of Contents**
 
 - [Installation](#installation)
+- [Development](#development)
 - [License](#license)
 
 ## Installation
 
 ```console
 pip install pscanner
+```
+
+## Development
+
+Prereqs for development
+
+```console
+pipx install hatch
+```
+
+Running development environment
+```console
+hatch shell
 ```
 
 ## License

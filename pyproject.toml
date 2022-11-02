@@ -10,7 +10,7 @@ requires-python = ">=3.7"
 license = "MIT"
 keywords = []
 authors = [
-  { name = "U.N. Owen", email = "void@some.where" },
+  { name = "Heath Brown", email = "heathd.brown@gmail.com" },
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -30,9 +30,9 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-Documentation = "https://github.com/unknown/pscanner#readme"
-Issues = "https://github.com/unknown/pscanner/issues"
-Source = "https://github.com/unknown/pscanner"
+Documentation = "https://github.com/heathdbrown/pscanner#readme"
+Issues = "https://github.com/heathdbrown/pscanner/issues"
+Source = "https://github.com/heathdbrown/pscanner"
 
 [project.scripts]
 pscanner = "pscanner.cli:pscanner"
