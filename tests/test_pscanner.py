@@ -7,8 +7,8 @@ def test_is_port_open():
 
 
 def test_is_subnet():
-    assert pscanner.is_subnet("192.168.1.0") == False
-    assert pscanner.is_subnet("192.168.0/24") == True
+    assert pscanner.is_subnet("192.168.1.0") is False
+    assert pscanner.is_subnet("192.168.0/24") is True
 
 
 def test_hosts_in_subnet():
