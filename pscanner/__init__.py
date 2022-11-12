@@ -16,11 +16,11 @@ GRAY = Fore.LIGHTBLACK_EX
 
 
 def are_alive(addresses: List[str]) -> List[str]:
-    return [host.address for host in multiping(addresses) if host.is_alive]
+    return [host.address for host in multiping(addresses, privileged=False) if host.is_alive]
 
 
 def is_host_alive(host: str) -> bool:
-    if not ping(host, timeout=1, count=1).is_alive:
+    if not ping(host, timeout=1, count=1, privileged=False).is_alive:
         print(f"{GRAY}{host:15} is not alive {RESET}")
         return False
     return True
