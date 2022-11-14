@@ -9,6 +9,8 @@ from pscanner import (
     is_subnet,
     hosts_in_subnet,
     is_host_alive,
+    is_port_range,
+    ports_from_range,
 )
 from ..__about__ import __version__
 
@@ -22,13 +24,22 @@ from ..__about__ import __version__
 @click.argument("port")
 @click.pass_context
 def pscanner(ctx: click.Context, host, port):
+
     if is_subnet(host):
         hosts = hosts_in_subnet(host)
         print(f"pinging {len(hosts)} hosts")
         alive_hosts = are_alive(hosts)
         print(f"found {len(alive_hosts)} alive")
         for ip in alive_hosts:
-            is_port_open(str(ip), port)
+            if is_port_range(port):
+                for p in ports_from_range(port):
+                    is_port_open(str(ip), p)
+            else:
+                is_port_open(port)
     else:
         if is_host_alive(host):
-            is_port_open(host, port)
+            if is_port_range(port):
+                for p in ports_from_range(port):
+                    is_port_open(host, p)
+            else:
+                is_port_open(host, port)
