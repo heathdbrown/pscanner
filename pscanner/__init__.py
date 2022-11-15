@@ -53,8 +53,11 @@ def hosts_in_subnet(network: str) -> List[str]:
     return [str(host) for host in ipaddress.ip_network(network).hosts()]
 
 
-def is_port_range(port) -> bool:
-    return isinstance(port, str)
+def is_port_range(port: str) -> bool:
+    if not port.find("-") == -1 or not port.find(",") == -1:
+        return True
+
+    return False
 
 
 def split_port_with_comma(port: str) -> List[int]:
