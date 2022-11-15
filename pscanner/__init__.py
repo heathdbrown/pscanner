@@ -5,10 +5,12 @@ import ipaddress
 import socket
 from typing import List
 import sys
+import logging
 
 from colorama import init, Fore
 from icmplib import async_multiping, ping, multiping
 
+logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 init()
 GREEN = Fore.GREEN
@@ -34,6 +36,7 @@ def is_port_open(host: str, port: int) -> bool:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.settimeout(3)
         try:
+            logging.debug("Attempting to connect to %s on port %s", host, port)
             sock.connect((host, int(port)))
         except ConnectionRefusedError:
             print(f"{GRAY}{host:15}:{port:5} is closed {RESET}")
