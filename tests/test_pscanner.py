@@ -16,9 +16,10 @@ def test_hosts_in_subnet():
 
 
 def test_is_port_range():
-    assert pscanner.is_port_range(22) is False
+    assert pscanner.is_port_range('22') is False
     assert pscanner.is_port_range("22-23") is True
     assert pscanner.is_port_range("22,23") is True
+    assert pscanner.is_port_range("22-23,26-28") is True
 
 
 def test_ports_from_range():

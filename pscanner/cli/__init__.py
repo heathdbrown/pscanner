@@ -35,7 +35,7 @@ def pscanner(ctx: click.Context, host, port):
                 for p in ports_from_range(port):
                     is_port_open(str(ip), p)
             else:
-                is_port_open(port)
+                is_port_open(str(ip), port)
     else:
         if is_host_alive(host):
             if is_port_range(port):
