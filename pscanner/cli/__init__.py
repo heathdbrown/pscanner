@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 import asyncio
 import click
+import logging
 from pscanner import (
     are_alive,
     is_port_open,
@@ -20,16 +21,24 @@ from ..__about__ import __version__
     invoke_without_command=True,
 )
 @click.version_option(version=__version__, prog_name="pscanner")
+@click.option('-v', '--verbose', count=True)
 @click.argument("host")
 @click.argument("port")
 @click.pass_context
-def pscanner(ctx: click.Context, host, port):
-
+def pscanner(ctx: click.Context, host, port, verbose):
+    if not verbose:
+        logging.basicConfig(
+            format="%(asctime)-15s %(levelname)s %(message)s", level="INFO"
+        )
+    else:
+        logging.basicConfig(
+            format="%(asctime)-15s %(levelname)s %(message)s", level="DEBUG"
+        )
     if is_subnet(host):
         hosts = hosts_in_subnet(host)
-        print(f"pinging {len(hosts)} hosts")
+        logging.info("pinging %s hosts" % len(hosts))
         alive_hosts = are_alive(hosts)
-        print(f"found {len(alive_hosts)} alive")
+        logging.info("found %s alive" % len(alive_hosts))
         for ip in alive_hosts:
             if is_port_range(port):
                 for p in ports_from_range(port):
