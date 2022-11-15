@@ -4,6 +4,7 @@
 import ipaddress
 import socket
 from typing import List
+import sys
 
 from colorama import init, Fore
 from icmplib import async_multiping, ping, multiping
@@ -29,17 +30,22 @@ def is_host_alive(host: str) -> bool:
 
 
 def is_port_open(host: str, port: int) -> bool:
-    try:
-        s = socket.socket()
-        s.connect((host, int(port)))
-    except ConnectionRefusedError:
-        print(f"{GRAY}{host:15}:{port:5} is closed {RESET}")
-    except TimeoutError:
-        print(f"{GRAY}{host:15}:{port:5} is not alive {RESET}")
-    else:
-        print(f"{GREEN}{host:15}:{port:5} is open {RESET}")
-    finally:
-        s.close()
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.settimeout(3)
+        try:
+            sock.connect((host, int(port)))
+        except ConnectionRefusedError:
+            print(f"{GRAY}{host:15}:{port:5} is closed {RESET}")
+            return False
+        except TimeoutError:
+            print(f"{GRAY}{host:15}:{port:5} timed out {RESET}")
+            return False
+        except KeyboardInterrupt:
+            sys.exit()
+        else:
+            print(f"{GREEN}{host:15}:{port:5} is open {RESET}")
+            return True
 
 
 def is_subnet(ip: str) -> bool:
@@ -77,7 +83,6 @@ def generate_port_range_from_dash(start_stop: List[str]) -> List[int]:
 
 
 def ports_from_range(port: str) -> List[int]:
-
     if "-" and not "," in port:
         return generate_port_range_from_dash(split_port_with_dash(port))
 
