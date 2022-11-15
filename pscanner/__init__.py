@@ -5,6 +5,8 @@ import ipaddress
 import socket
 from typing import List
 import sys
+from concurrent.futures import ThreadPoolExecutor
+
 import logging
 
 from colorama import init, Fore
@@ -32,7 +34,7 @@ def is_host_alive(host: str) -> bool:
 
 
 def is_port_open(host: str, port: int) -> bool:
-
+    # https://superfastpython.com/threadpoolexecutor-port-scanner/
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.settimeout(3)
         try:
@@ -98,3 +100,10 @@ def ports_from_range(port: str) -> List[int]:
             for p in split_port_with_comma_str(port)
             for _ in generate_port_range_from_dash(split_port_with_dash(p))
         ]
+
+
+# https://superfastpython.com/threadpoolexecutor-port-scanner/
+def port_scan(host: str, ports: List[int]):
+    logging.info("Scanning ports...%s", host)
+    with ThreadPoolExecutor(len(ports)) as executor:
+        executor.map(is_port_open, [host] * len(ports), ports)
