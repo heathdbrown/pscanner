@@ -12,6 +12,7 @@ from pscanner import (
     is_host_alive,
     is_port_range,
     ports_from_range,
+    port_scan,
 )
 from ..__about__ import __version__
 
@@ -21,7 +22,7 @@ from ..__about__ import __version__
     invoke_without_command=True,
 )
 @click.version_option(version=__version__, prog_name="pscanner")
-@click.option('-v', '--verbose', count=True)
+@click.option("-v", "--verbose", count=True)
 @click.argument("host")
 @click.argument("port")
 @click.pass_context
@@ -41,14 +42,12 @@ def pscanner(ctx: click.Context, host, port, verbose):
         logging.info("found %s alive" % len(alive_hosts))
         for ip in alive_hosts:
             if is_port_range(port):
-                for p in ports_from_range(port):
-                    is_port_open(str(ip), p)
+                port_scan(str(ip), ports_from_range(port))
             else:
                 is_port_open(str(ip), port)
     else:
         if is_host_alive(host):
             if is_port_range(port):
-                for p in ports_from_range(port):
-                    is_port_open(host, p)
+                port_scan(host, ports_from_range(port))
             else:
                 is_port_open(host, port)
