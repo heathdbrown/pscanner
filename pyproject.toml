@@ -26,7 +26,8 @@ classifiers = [
 dependencies = [
   "click",
   "colorama",
-  "icmplib"
+  "icmplib",
+  "rich"
 ]
 dynamic = ["version"]
 
